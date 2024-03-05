@@ -4,7 +4,7 @@ Class {
 	#name : #Matrix,
 	#superclass : #Object,
 	#instVars : [
-		'matrix' " Stores the matrix data in a classic 2D array representation."
+		'matrix' " Stores the matrix data in a classic 2D array representation "
 	],
 	#category : #'IP-PharoTestTaskSamples'
 }
