@@ -4,12 +4,11 @@ Class {
 	#name : #Matrix,
 	#superclass : #Object,
 	#instVars : [
-		'matrix' " Stores the matrix data in a classic 2D array representation "
+		" Stores the matrix data in a classic 2D array representation "
+		'matrix' 
 	],
 	#category : #'IP-PharoTestTaskSamples'
 }
-
-{ #category : #'add method - selector' }
 
 " Accessor for the matrix representation in classic 2D array format"
 matrix ^ matrix
@@ -29,8 +28,6 @@ hollowMatrix: aHollowMatrix
      Internally converts the hollow matrix to a classic representation and then calls the private method to initialize the matrix."
     self private: #initializeMatrixWith: (self convertToClassicMatrix(aHollowMatrix))
 
-!Matrix methodsFor: 'private' stamp: 'refactored 2024-03-05'!
-
 " Initializes the matrix with the provided representation (classic or hollow after conversion)"
 initializeMatrixWith: aMatrixRepresentation
     "Sets the internal matrix instance variable with the provided representation."
@@ -42,10 +39,10 @@ convertToHollowMatrix: aMatrix
 
     | hollowMatrix value |
     hollowMatrix := OrderedCollection new.
-    1 to: aMatrix size do: [:row ->
-        1 to: (aMatrix at: row) size do: [:col ->
+    1 to: aMatrix size do: [:row |
+        1 to: (aMatrix at: row) size do: [:col |
             value := (aMatrix at: row) at: col.
-            value ~= 0 ifTrue: [hollowMatrix add: {row. col. value}]  " Add only non-zero elements "
+            value = 0 ifFalse: [hollowMatrix add: {row. col. value}]  " Add only non-zero elements "
         ]
     ].
     ^ hollowMatrix
