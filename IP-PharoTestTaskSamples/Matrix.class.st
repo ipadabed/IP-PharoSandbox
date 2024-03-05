@@ -10,7 +10,7 @@ Class {
 }
 
 " Accessor for the matrix representation in classic 2D array format"
-matrix ^ matrix
+matrix ^ matrix.
 
 " Setter for the matrix representation using a classic 2D array"
 matrix: aMatrix
@@ -19,21 +19,21 @@ matrix: aMatrix
     self private: #initializeMatrixWith: aMatrix.
 
 " Accessor for the hollow matrix representation as an OrderedCollection of tuples (row, col, value)"
-hollowMatrix ^ self convertToHollowMatrix(matrix)
+Matrix >> hollowMatrix ^ self convertToHollowMatrix(matrix)
 
 " Setter for the hollow matrix representation using an OrderedCollection of tuples (row, col, value)"
-hollowMatrix: aHollowMatrix
+Matrix >> hollowMatrix: aHollowMatrix
     "Sets the matrix using the provided hollow matrix representation.
      Internally converts the hollow matrix to a classic representation and then calls the private method to initialize the matrix."
     self private: #initializeMatrixWith: (self convertToClassicMatrix(aHollowMatrix))
 
 " Initializes the matrix with the provided representation (classic or hollow after conversion)"
-initializeMatrixWith: aMatrixRepresentation
+Matrix >> initializeMatrixWith: aMatrixRepresentation
     "Sets the internal matrix instance variable with the provided representation."
     matrix := aMatrixRepresentation.
 
 " Converts the classic matrix (2D array) to a hollow matrix representation (OrderedCollection of tuples)"
-convertToHollowMatrix: aMatrix
+Matrix >> convertToHollowMatrix: aMatrix
     "Iterates through each element in the classic matrix and adds non-zero elements as tuples (row, col, value) to a new OrderedCollection."
 
     | hollowMatrix value |
@@ -47,7 +47,7 @@ convertToHollowMatrix: aMatrix
     ^ hollowMatrix
 
 " Converts the hollow matrix representation (OrderedCollection of tuples) to a classic matrix (2D array)"
-convertToClassicMatrix: aHollowMatrix
+Matrix >> convertToClassicMatrix: aHollowMatrix
     "Calculates the required dimensions for the classic matrix based on the maximum row and column values in the hollow matrix.
      Creates a classic matrix filled with zeros and then iterates through the hollow matrix elements, populating the corresponding positions in the classic matrix."
 
