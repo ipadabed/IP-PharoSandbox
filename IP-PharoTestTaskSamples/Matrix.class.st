@@ -1,10 +1,15 @@
-' This class represents a matrix and provides methods to manage its internal representation and conversion between classic and hollow formats.'
+" This class represents a matrix and provides methods to manage its internal representation and conversion between classic and hollow formats."
 
-Class subclass: #Matrix
-    instanceVariableNames: 'matrix'  " Stores the matrix data in a classic 2D array representation."
-    category: 'IP-PharoTestTaskSamples'
+Class {
+	#name : #Matrix,
+	#superclass : #Object,
+	#instVars : [
+		'matrix' " Stores the matrix data in a classic 2D array representation."
+	],
+	#category : #'IP-PharoTestTaskSamples'
+}
 
-!Matrix methodsFor: 'public' stamp: 'refactored 2024-03-05'!
+{ #category : #'add method - selector' }
 
 " Accessor for the matrix representation in classic 2D array format"
 matrix ^ matrix
