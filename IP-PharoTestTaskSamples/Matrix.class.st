@@ -9,69 +9,43 @@ Class {
 	#category : #'IP-PharoTestTaskSamples'
 }
 
-" Accessor for the matrix representation in classic 2D array format"
-matrix ^ matrix.
+{ #category : #'add method - selector' }
+Matrix >> convertToClassicMatrix: aMatrix [
+	"takes a hollow matrix (aMatrix) defined as a vector of tuples (row, col, value) and converts it to a vector of vectors"
 
-" Setter for the matrix representation using a classic 2D array"
-matrix: aMatrix
-    "Sets the matrix using the provided classic 2D array representation.
-     Internally calls the private method to initialize the matrix."
-    self private: #initializeMatrixWith: aMatrix.
+	| classicMatrix rowSize colSize row col value |
+	rowSize := 1.
+	colSize := 1.
+	"finding target matrix dimensions assuming that we don't need whole row or column if it is filled by zeroes and it is right/bottom side"
+	1 to: aMatrix size do: [ :ind |
+		rowSize := rowSize max: ((aMatrix at: ind) at: 1).
+		colSize := colSize max: ((aMatrix at: ind) at: 2) ].
 
-" Accessor for the hollow matrix representation as an OrderedCollection of tuples (row, col, value)"
-Matrix >> hollowMatrix ^ self convertToHollowMatrix(matrix)
+	"populate target matrix with zeroes"
+	classicMatrix := Array new: rowSize.
+	1 to: colSize do: [ :ind |
+	classicMatrix at: ind put: (Array new: colSize withAll: 0) ].
 
-" Setter for the hollow matrix representation using an OrderedCollection of tuples (row, col, value)"
-Matrix >> hollowMatrix: aHollowMatrix
-    "Sets the matrix using the provided hollow matrix representation.
-     Internally converts the hollow matrix to a classic representation and then calls the private method to initialize the matrix."
-    self private: #initializeMatrixWith: (self convertToClassicMatrix(aHollowMatrix))
+	"populate target matrix with non-zero value"
+	1 to: aMatrix size do: [ :ind |
+		row := (aMatrix at: ind) at: 1.
+		col := (aMatrix at: ind) at: 2.
+		value := (aMatrix at: ind) at: 3.
+		(classicMatrix at: row) at: col put: value.].
+ ^classicMatrix
+]
 
-" Initializes the matrix with the provided representation (classic or hollow after conversion)"
-Matrix >> initializeMatrixWith: aMatrixRepresentation
-    "Sets the internal matrix instance variable with the provided representation."
-    matrix := aMatrixRepresentation.
+{ #category : #'add method - selector' }
+Matrix >> convertToHollowMatrix: aMatrix [
+	"takes clsssic matrix (aMatrix) defined as a vector of vectors and converts it to a set of tuples"
 
-" Converts the classic matrix (2D array) to a hollow matrix representation (OrderedCollection of tuples)"
-Matrix >> convertToHollowMatrix: aMatrix
-    "Iterates through each element in the classic matrix and adds non-zero elements as tuples (row, col, value) to a new OrderedCollection."
-
-    | hollowMatrix value |
-    hollowMatrix := OrderedCollection new.
-    1 to: aMatrix size do: [:row |
-        1 to: (aMatrix at: row) size do: [:col |
-            value := (aMatrix at: row) at: col.
-            value = 0 ifFalse: [hollowMatrix add: {row. col. value}]  " Add only non-zero elements "
-        ]
-    ].
-    ^ hollowMatrix
-
-" Converts the hollow matrix representation (OrderedCollection of tuples) to a classic matrix (2D array)"
-Matrix >> convertToClassicMatrix: aHollowMatrix
-    "Calculates the required dimensions for the classic matrix based on the maximum row and column values in the hollow matrix.
-     Creates a classic matrix filled with zeros and then iterates through the hollow matrix elements, populating the corresponding positions in the classic matrix."
-
-    | classicMatrix rowSize colSize row col value |
-    rowSize := 1.
-    colSize := 1.
-    " Find the maximum row and column values from the hollow matrix "
-    1 to: aHollowMatrix size do: [ :ind |
-        rowSize := rowSize max: ((aHollowMatrix at: ind) at: 1).
-        colSize := colSize max: ((aHollowMatrix at: ind) at: 2)
-    ].
-
-    " Create a classic matrix filled with zeros"
-    classicMatrix := Array new: rowSize.
-    1 to: colSize do: [ :ind |
-        classicMatrix at: ind put: (Array new: colSize withAll: 0)
-    ].
-
-    " Populate the classic matrix with non-zero values from the hollow matrix"
-    1 to: aHollowMatrix size do: [ :ind |
-        row := (aHollowMatrix at: ind) at: 1.
-        col := (aHollowMatrix at: ind) at: 2.
-        value := (aHollowMatrix at: ind) at: 3.
-        (classicMatrix at: row) at: col put: value.
-    ].
-    ^ classicMatrix
-
+	| hollowMatrix value |
+	hollowMatrix := OrderedCollection new.
+  	1 to: aMatrix size do: [:row |
+    1 to: (aMatrix at: 1) size  do: [:col |
+      value := (aMatrix at: row) at: col.
+      value = 0 ifFalse: [hollowMatrix add: {row. col. value}]
+    ]
+  ].
+^hollowMatrix 
+]
